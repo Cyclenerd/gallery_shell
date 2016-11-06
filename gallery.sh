@@ -138,7 +138,7 @@ while [[ $file -lt $numfiles ]]; do
 	[[ $file -ne $((numfiles - 1)) ]] && next=${filelist[$((file + 1))]}
 	imagehtmlfile=$thumbdir/$filename.html
 	exifinfo=$($exif "$filename")
-	filesize=$(ls -lah "$filename" | awk '{ print $5}')
+	filesize=$(wc -c < "$filename" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
 	cat > "$imagehtmlfile" << EOF
 <!DOCTYPE HTML>
 <html lang="en">
@@ -214,7 +214,7 @@ if [[ $(find . -type f -name \*.mov  -o -name '*.mp4' | wc -l) -gt 0 ]]; then
 EOF
 	if [[ $(find . -type f -name \*.mov | wc -l) -gt 0 ]]; then
 	for filename in *.[mM][oO][vV]; do
-		filesize=$(ls -lah "$filename" | awk '{ print $5}')
+		filesize=$(wc -c < "$filename" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
 		cat >> "$htmlfile" << EOF
 <a href="$filename" class="btn btn-primary" role="button">$movieicon $filename ($filesize)</a>
 EOF
@@ -222,7 +222,7 @@ EOF
 	fi
 	if [[ $(find . -type f -name \*.mp4 | wc -l) -gt 0 ]]; then
 	for filename in *.[mM][pP]4; do
-		filesize=$(ls -lah "$filename" | awk '{ print $5}')
+		filesize=$(wc -c < "$filename" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
 		cat >> "$htmlfile" << EOF
 <a href="$filename" class="btn btn-primary" role="button">$movieicon $filename ($filesize)</a>
 EOF
@@ -243,7 +243,7 @@ if [[ $(find . -type f -name \*.zip | wc -l) -gt 0 ]]; then
 	<div class="col-xs-12">
 EOF
 	for filename in *.[zZ][iI][pP]; do
-		filesize=$(ls -lah "$filename" | awk '{ print $5}')
+		filesize=$(wc -c < "$filename" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
 		cat >> "$htmlfile" << EOF
 <a href="$filename" class="btn btn-primary" role="button">$downloadicon $filename ($filesize)</a>
 EOF
