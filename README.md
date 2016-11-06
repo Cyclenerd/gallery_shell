@@ -22,7 +22,7 @@ All you need is a place to host your plain html and jpeg files. This can also be
 Requirements
 ------------
 * ImageMagick (http://www.imagemagick.org/) for the `convert` utility.
-* JHead (https://wiki.ubuntuusers.de/JHead/) for EXIF data extraction
+* JHead (http://www.sentex.net/~mwandel/jhead/) for EXIF data extraction
 
 On a debian-based system (Ubuntu), just run `apt-get install imagemagick jhead` as root.
 
@@ -36,7 +36,7 @@ Usage
 `gallery.sh` works in the **current** directory.  Just load the index.html in a browser see the output. 
 
 The directory should contain a bunch of JPEG (.jpg or .JPG) files. It does not work recursively. 
-ZIP files (.zip or .ZIP) and movies (.mov or .MOV) are also considered. They appear as a download button in the gallery.
+ZIP files (.zip or .ZIP) and movies (.mov, .MOV, .mp4 or .MP4) are also considered. They appear as a download button in the gallery.
 
 Screenshots
 -----------

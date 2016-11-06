@@ -201,8 +201,8 @@ done
 
 fi
 
-### Movies (MOV)
-if [[ $(ls -l | grep -i mov | wc -l) -gt 0 ]]; then
+### Movies (MOV or MP4)
+if [[ $(ls -l | grep -i "mov\|mp4" | wc -l) -gt 0 ]]; then
 	cat >> "$htmlfile" << EOF
 	<div class="row">
 		<div class="col-xs-12">
@@ -212,12 +212,22 @@ if [[ $(ls -l | grep -i mov | wc -l) -gt 0 ]]; then
 	<div class="row">
 	<div class="col-xs-12">
 EOF
+	if [[ $(ls -l | grep -i "mov" | wc -l) -gt 0 ]]; then
 	for filename in *.[mM][oO][vV]; do
-		filesize=$(ls -lah $filename | awk '{ print $5}')
+		filesize=$(ls -lah "$filename" | awk '{ print $5}')
 		cat >> "$htmlfile" << EOF
 <a href="$filename" class="btn btn-primary" role="button">$movieicon $filename ($filesize)</a>
 EOF
 	done
+	fi
+	if [[ $(ls -l | grep -i "mp4" | wc -l) -gt 0 ]]; then
+	for filename in *.[mM][pP]4; do
+		filesize=$(ls -lah "$filename" | awk '{ print $5}')
+		cat >> "$htmlfile" << EOF
+<a href="$filename" class="btn btn-primary" role="button">$movieicon $filename ($filesize)</a>
+EOF
+	done
+	fi
 	echo '</div></div>' >> "$htmlfile"
 fi
 
@@ -233,7 +243,7 @@ if [[ $(ls -l | grep -i zip | wc -l) -gt 0 ]]; then
 	<div class="col-xs-12">
 EOF
 	for filename in *.[zZ][iI][pP]; do
-		filesize=$(ls -lah $filename | awk '{ print $5}')
+		filesize=$(ls -lah "$filename" | awk '{ print $5}')
 		cat >> "$htmlfile" << EOF
 <a href="$filename" class="btn btn-primary" role="button">$downloadicon $filename ($filesize)</a>
 EOF
