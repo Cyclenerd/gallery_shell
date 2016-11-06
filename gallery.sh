@@ -101,7 +101,7 @@ cat > "$htmlfile" << EOF
 EOF
 
 ### Photos (JPG)
-if [[ $(ls -l | grep -i jpg | wc -l) -gt 0 ]]; then
+if [[ $(find . -type f -name \*.jpg | wc -l) -gt 0 ]]; then
 
 echo '<div class="row">' >> "$htmlfile"
 ## Generate Images
@@ -202,7 +202,7 @@ done
 fi
 
 ### Movies (MOV or MP4)
-if [[ $(ls -l | grep -i "mov\|mp4" | wc -l) -gt 0 ]]; then
+if [[ $(find . -type f -name \*.mov  -o -name '*.mp4' | wc -l) -gt 0 ]]; then
 	cat >> "$htmlfile" << EOF
 	<div class="row">
 		<div class="col-xs-12">
@@ -212,7 +212,7 @@ if [[ $(ls -l | grep -i "mov\|mp4" | wc -l) -gt 0 ]]; then
 	<div class="row">
 	<div class="col-xs-12">
 EOF
-	if [[ $(ls -l | grep -i "mov" | wc -l) -gt 0 ]]; then
+	if [[ $(find . -type f -name \*.mov | wc -l) -gt 0 ]]; then
 	for filename in *.[mM][oO][vV]; do
 		filesize=$(ls -lah "$filename" | awk '{ print $5}')
 		cat >> "$htmlfile" << EOF
@@ -220,7 +220,7 @@ EOF
 EOF
 	done
 	fi
-	if [[ $(ls -l | grep -i "mp4" | wc -l) -gt 0 ]]; then
+	if [[ $(find . -type f -name \*.mp4 | wc -l) -gt 0 ]]; then
 	for filename in *.[mM][pP]4; do
 		filesize=$(ls -lah "$filename" | awk '{ print $5}')
 		cat >> "$htmlfile" << EOF
@@ -232,7 +232,7 @@ EOF
 fi
 
 ### Downloads (ZIP)
-if [[ $(ls -l | grep -i zip | wc -l) -gt 0 ]]; then
+if [[ $(find . -type f -name \*.zip | wc -l) -gt 0 ]]; then
 	cat >> "$htmlfile" << EOF
 	<div class="row">
 		<div class="col-xs-12">
