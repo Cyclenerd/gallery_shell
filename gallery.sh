@@ -101,7 +101,7 @@ cat > "$htmlfile" << EOF
 EOF
 
 ### Photos (JPG)
-if [[ $(find . -type f -name \*.jpg | wc -l) -gt 0 ]]; then
+if [[ $(find . -type f -name \*.jpg -maxdepth 1 | wc -l) -gt 0 ]]; then
 
 echo '<div class="row">' >> "$htmlfile"
 ## Generate Images
