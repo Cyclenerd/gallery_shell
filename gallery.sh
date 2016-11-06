@@ -202,7 +202,7 @@ done
 fi
 
 ### Movies (MOV or MP4)
-if [[ $(find . -type f -name \*.mov  -o -name '*.mp4' | wc -l) -gt 0 ]]; then
+if [[ $(find . -type f -name \*.mov  -o -name '*.mp4' -maxdepth 1 | wc -l) -gt 0 ]]; then
 	cat >> "$htmlfile" << EOF
 	<div class="row">
 		<div class="col-xs-12">
@@ -212,7 +212,7 @@ if [[ $(find . -type f -name \*.mov  -o -name '*.mp4' | wc -l) -gt 0 ]]; then
 	<div class="row">
 	<div class="col-xs-12">
 EOF
-	if [[ $(find . -type f -name \*.mov | wc -l) -gt 0 ]]; then
+	if [[ $(find . -type f -name \*.mov -maxdepth 1 | wc -l) -gt 0 ]]; then
 	for filename in *.[mM][oO][vV]; do
 		filesize=$(wc -c < "$filename" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
 		cat >> "$htmlfile" << EOF
@@ -220,7 +220,7 @@ EOF
 EOF
 	done
 	fi
-	if [[ $(find . -type f -name \*.mp4 | wc -l) -gt 0 ]]; then
+	if [[ $(find . -type f -name \*.mp4 -maxdepth 1 | wc -l) -gt 0 ]]; then
 	for filename in *.[mM][pP]4; do
 		filesize=$(wc -c < "$filename" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
 		cat >> "$htmlfile" << EOF
@@ -232,7 +232,7 @@ EOF
 fi
 
 ### Downloads (ZIP)
-if [[ $(find . -type f -name \*.zip | wc -l) -gt 0 ]]; then
+if [[ $(find . -type f -name \*.zip -maxdepth 1 | wc -l) -gt 0 ]]; then
 	cat >> "$htmlfile" << EOF
 	<div class="row">
 		<div class="col-xs-12">
