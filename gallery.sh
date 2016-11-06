@@ -172,7 +172,7 @@ EOF
 </div>
 <div class="row">
 	<div class="col-xs-12">
-		<p><a class="btn btn-info btn-lg" href="../$filename">$downloadicon Download Original Image File ($filesize)</a></p>
+		<p><a class="btn btn-info btn-lg" href="../$filename">$downloadicon Download Original ($filesize)</a></p>
 	</div>
 </div>
 EOF
