@@ -29,9 +29,9 @@ downloadicon='<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"><
 movieicon='<span class="glyphicon glyphicon-film" aria-hidden="true"></span>'
 homeicon='<span class="glyphicon glyphicon-home" aria-hidden="true"></span>'
 
-function debug {
-	return 0 # 0=enable, 1=disable debugging output
-}
+# Debugging output
+# true=enable, false=disable 
+debug=true
 
 #########################################################################################
 #### End Configuration Section
@@ -43,9 +43,17 @@ datetime=$(date -u "+%Y-%m-%d %H:%M:%S")
 datetime+=" UTC"
 
 function usage {
-	echo "usage: $me [-t <title>] [-h]"
-	echo "  [-t <title>] 	sets the title (default: $title)"
-	echo "  [-h]	 	displays help (this message)"
+	returnCode="$1"
+	echo -e "Usage: $me [-t <title>] [-h]:
+	[-t <title>]\t sets the title (default: $title)
+	[-h]\t\t displays help (this message)"
+	exit "$returnCode"
+}
+
+function debugOutput(){
+	if [[ "$debug" == true ]]; then
+		echo "$1" # if debug variable is true, echo whatever's passed to the function
+	fi
 }
 
 while getopts ":t:h" opt; do
@@ -54,17 +62,16 @@ while getopts ":t:h" opt; do
 		title="$OPTARG"
 		;;
 	h)
-		usage
-		exit 0
+		usage 0
 		;;
-	\?)
-		echo "Invalid option: -$OPTARG" >&2
-		exit 1
+	*)
+		echo "Invalid option: -$OPTARG"
+		usage 1
 		;;
 	esac
 done
 
-debug && echo "- $me : $datetime"
+debugOutput "- $me : $datetime"
 
 ### Check Commands
 command -v $convert >/dev/null 2>&1 || { echo >&2 "!!! $convert it's not installed.  Aborting."; exit 1; }
@@ -80,7 +87,7 @@ for res in ${heights[*]}; do
 done
 
 #### Create Startpage
-debug && echo "+" $htmlfile
+debugOutput "$htmlfile"
 cat > "$htmlfile" << EOF
 <!DOCTYPE HTML>
 <html lang="en">
@@ -107,16 +114,14 @@ echo '<div class="row">' >> "$htmlfile"
 ## Generate Images
 numfiles=0
 for filename in *.[jJ][pP][gG]; do
-	debug && echo -n "+ $filename: "
 	filelist[$numfiles]=$filename
 	let numfiles++
 	for res in ${heights[*]}; do
-		debug && echo -n "$thumbdir/$res "
 		if [[ ! -s $thumbdir/$res/$filename ]]; then
+			debugOutput "$thumbdir/$res/$filename"
 			$convert -auto-orient -strip -quality $quality -resize x$res "$filename" "$thumbdir/$res/$filename"
 		fi
 	done
-	debug && echo
 	cat >> "$htmlfile" << EOF
 <div class="col-md-3 col-sm-12">
 	<p>
@@ -139,6 +144,7 @@ while [[ $file -lt $numfiles ]]; do
 	imagehtmlfile=$thumbdir/$filename.html
 	exifinfo=$($exif "$filename")
 	filesize=$(wc -c < "$filename" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
+	debugOutput "$thumbdir/$res/$imagehtmlfile"
 	cat > "$imagehtmlfile" << EOF
 <!DOCTYPE HTML>
 <html lang="en">
@@ -263,4 +269,4 @@ cat >> "$htmlfile" << EOF
 </html>
 EOF
 
-debug && echo "= done :-)"
+debugOutput "= done :-)"
