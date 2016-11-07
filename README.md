@@ -38,6 +38,11 @@ Usage
 The directory should contain a bunch of JPEG (.jpg or .JPG) files. It does not work recursively. 
 ZIP files (.zip or .ZIP) and movies (.mov, .MOV, .mp4 or .MP4) are also considered. They appear as a download button in the gallery.
 
+Demo
+----
+
+https://cyclenerd.github.io/gallery_shell_demo/
+
 Screenshots
 -----------
 
