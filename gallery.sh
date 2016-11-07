@@ -56,6 +56,19 @@ function debugOutput(){
 	fi
 }
 
+function getFileSize(){
+	# Be aware that BSD stat doesn't support --version and -c
+	stat --version &>/dev/null
+	if [[ "${?}" -eq "0" ]]; then
+		# GNU
+		local myfilesize=$(stat -c %s "$1" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
+	else
+		# BSD
+		local myfilesize=$(stat -f %z "$1" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
+	fi
+	echo "$myfilesize"
+}
+
 while getopts ":t:h" opt; do
 	case $opt in
 	t)
@@ -108,7 +121,7 @@ cat > "$htmlfile" << EOF
 EOF
 
 ### Photos (JPG)
-if [[ $(find . -type f -name \*.jpg -maxdepth 1 | wc -l) -gt 0 ]]; then
+if [[ $(find . -maxdepth 1 -type f -name \*.jpg | wc -l) -gt 0 ]]; then
 
 echo '<div class="row">' >> "$htmlfile"
 ## Generate Images
@@ -143,8 +156,8 @@ while [[ $file -lt $numfiles ]]; do
 	[[ $file -ne $((numfiles - 1)) ]] && next=${filelist[$((file + 1))]}
 	imagehtmlfile=$thumbdir/$filename.html
 	exifinfo=$($exif "$filename")
-	filesize=$(wc -c < "$filename" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
-	debugOutput "$thumbdir/$res/$imagehtmlfile"
+	filesize=$(getFileSize "$filename")
+	debugOutput "$imagehtmlfile"
 	cat > "$imagehtmlfile" << EOF
 <!DOCTYPE HTML>
 <html lang="en">
@@ -208,7 +221,7 @@ done
 fi
 
 ### Movies (MOV or MP4)
-if [[ $(find . -type f -name \*.mov  -o -name '*.mp4' -maxdepth 1 | wc -l) -gt 0 ]]; then
+if [[ $(find . -maxdepth 1 -type f -name \*.mov  -o -name '*.mp4' | wc -l) -gt 0 ]]; then
 	cat >> "$htmlfile" << EOF
 	<div class="row">
 		<div class="col-xs-12">
@@ -218,17 +231,17 @@ if [[ $(find . -type f -name \*.mov  -o -name '*.mp4' -maxdepth 1 | wc -l) -gt 0
 	<div class="row">
 	<div class="col-xs-12">
 EOF
-	if [[ $(find . -type f -name \*.mov -maxdepth 1 | wc -l) -gt 0 ]]; then
+	if [[ $(find . -maxdepth 1 -type f -name \*.mov | wc -l) -gt 0 ]]; then
 	for filename in *.[mM][oO][vV]; do
-		filesize=$(wc -c < "$filename" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
+		filesize=$(getFileSize "$filename")
 		cat >> "$htmlfile" << EOF
 <a href="$filename" class="btn btn-primary" role="button">$movieicon $filename ($filesize)</a>
 EOF
 	done
 	fi
-	if [[ $(find . -type f -name \*.mp4 -maxdepth 1 | wc -l) -gt 0 ]]; then
+	if [[ $(find . -maxdepth 1 -type f -name \*.mp4 | wc -l) -gt 0 ]]; then
 	for filename in *.[mM][pP]4; do
-		filesize=$(wc -c < "$filename" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
+		filesize=$(getFileSize "$filename")
 		cat >> "$htmlfile" << EOF
 <a href="$filename" class="btn btn-primary" role="button">$movieicon $filename ($filesize)</a>
 EOF
@@ -238,7 +251,7 @@ EOF
 fi
 
 ### Downloads (ZIP)
-if [[ $(find . -type f -name \*.zip -maxdepth 1 | wc -l) -gt 0 ]]; then
+if [[ $(find . -maxdepth 1 -type f -name \*.zip | wc -l) -gt 0 ]]; then
 	cat >> "$htmlfile" << EOF
 	<div class="row">
 		<div class="col-xs-12">
@@ -249,7 +262,7 @@ if [[ $(find . -type f -name \*.zip -maxdepth 1 | wc -l) -gt 0 ]]; then
 	<div class="col-xs-12">
 EOF
 	for filename in *.[zZ][iI][pP]; do
-		filesize=$(wc -c < "$filename" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
+		filesize=$(getFileSize "$filename")
 		cat >> "$htmlfile" << EOF
 <a href="$filename" class="btn btn-primary" role="button">$downloadicon $filename ($filesize)</a>
 EOF
