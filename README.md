@@ -31,7 +31,12 @@ Under macOS you can install it with MacPort (https://www.macports.org/): `sudo p
 Usage
 -----
 
-	gallery.sh [-t <title>] [-h]
+	gallery.sh [-t <title>] [-d <thumbdir>] [-h]:
+		[-t <title>]	 sets the title (default: Gallery)
+		[-d <thumbdir>]	 sets the thumbdir (default: __thumbs)
+		[-h]		 displays help (this message)
+
+Example: `gallery.sh` or `gallery.sh -t "My Photos" -d "thumbs"`
 
 `gallery.sh` works in the **current** directory.  Just load the index.html in a browser see the output. 
 
