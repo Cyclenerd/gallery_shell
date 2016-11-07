@@ -44,8 +44,9 @@ datetime+=" UTC"
 
 function usage {
 	returnCode="$1"
-	echo -e "Usage: $me [-t <title>] [-h]:
+	echo -e "Usage: $me [-t <title>] [-d <thumbdir>] [-h]:
 	[-t <title>]\t sets the title (default: $title)
+	[-d <thumbdir>]\t sets the thumbdir (default: $thumbdir)
 	[-h]\t\t displays help (this message)"
 	exit "$returnCode"
 }
@@ -69,10 +70,13 @@ function getFileSize(){
 	echo "$myfilesize"
 }
 
-while getopts ":t:h" opt; do
+while getopts ":t:d:h" opt; do
 	case $opt in
 	t)
 		title="$OPTARG"
+		;;
+	d)
+		thumbdir="$OPTARG"
 		;;
 	h)
 		usage 0
