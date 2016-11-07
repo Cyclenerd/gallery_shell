@@ -11,8 +11,8 @@
 height_small=187
 height_large=768
 quality=85
-thumbdir=__thumbs
-htmlfile=index.html
+thumbdir="__thumbs"
+htmlfile="index.html"
 title="Gallery"
 footer='Created with <a href="https://github.com/Cyclenerd/gallery_shell">gallery.sh</a>'
 
@@ -59,13 +59,12 @@ function debugOutput(){
 
 function getFileSize(){
 	# Be aware that BSD stat doesn't support --version and -c
-	stat --version &>/dev/null
-	if [[ "${?}" -eq "0" ]]; then
+	if stat --version &>/dev/null; then
 		# GNU
-		local myfilesize=$(stat -c %s "$1" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
+		myfilesize=$(stat -c %s "$1" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
 	else
 		# BSD
-		local myfilesize=$(stat -f %z "$1" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
+		myfilesize=$(stat -f %z "$1" | awk '{$1/=1000000;printf "%.2fMB\n",$1}')
 	fi
 	echo "$myfilesize"
 }
@@ -95,12 +94,12 @@ command -v $convert >/dev/null 2>&1 || { echo >&2 "!!! $convert it's not install
 command -v $exif >/dev/null 2>&1 || { echo >&2 "!!! $exif it's not installed.  Aborting."; exit 1; }
 
 ### Create Folders
-[[ -d $thumbdir ]] || mkdir $thumbdir || exit 2
+[[ -d "$thumbdir" ]] || mkdir "$thumbdir" || exit 2
 
 heights[0]=$height_small
 heights[1]=$height_large
 for res in ${heights[*]}; do
-	[[ -d $thumbdir/$res ]] || mkdir -p $thumbdir/$res || exit 3
+	[[ -d "$thumbdir/$res" ]] || mkdir -p "$thumbdir/$res" || exit 3
 done
 
 #### Create Startpage
@@ -147,7 +146,7 @@ for filename in *.[jJ][pP][gG]; do
 	</p>
 </div>
 EOF
-[[ $(( $numfiles % 4 )) -eq 0 ]] && echo '<div class="clearfix visible-md visible-lg"></div>' >> "$htmlfile"
+[[ $((numfiles % 4)) -eq 0 ]] && echo '<div class="clearfix visible-md visible-lg"></div>' >> "$htmlfile"
 done
 echo '</div>' >> "$htmlfile"
 
@@ -155,10 +154,11 @@ echo '</div>' >> "$htmlfile"
 file=0
 while [[ $file -lt $numfiles ]]; do
 	filename=${filelist[$file]}
-	prev= next=
+	prev=""
+	next=""
 	[[ $file -ne 0 ]] && prev=${filelist[$((file - 1))]}
 	[[ $file -ne $((numfiles - 1)) ]] && next=${filelist[$((file + 1))]}
-	imagehtmlfile=$thumbdir/$filename.html
+	imagehtmlfile="$thumbdir/$filename.html"
 	exifinfo=$($exif "$filename")
 	filesize=$(getFileSize "$filename")
 	debugOutput "$imagehtmlfile"
@@ -183,8 +183,8 @@ EOF
 
 	# Pager
 	echo '<div class="row"><div class="col-xs-12"><nav><ul class="pager">' >> "$imagehtmlfile"
-	[[ $prev ]] && echo '<li class="previous"><a href="'$prev'.html"><span aria-hidden="true">&larr;</span></a></li>' >> "$imagehtmlfile"
-	[[ $next ]] && echo '<li class="next"><a href="'$next'.html"><span aria-hidden="true">&rarr;</span></a></li>' >> "$imagehtmlfile"
+	[[ $prev ]] && echo '<li class="previous"><a href="'"$prev"'.html"><span aria-hidden="true">&larr;</span></a></li>' >> "$imagehtmlfile"
+	[[ $next ]] && echo '<li class="next"><a href="'"$next"'.html"><span aria-hidden="true">&rarr;</span></a></li>' >> "$imagehtmlfile"
 	echo '</ul></nav></div></div>' >> "$imagehtmlfile"
 
 	cat >> "$imagehtmlfile" << EOF
