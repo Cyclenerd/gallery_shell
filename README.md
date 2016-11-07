@@ -14,7 +14,7 @@ It offers several features:
 * Nice and simple Bootstrap CSS layout
 * Locally previewable galleries by accessing images locally (e.g. file:///home/nils/pics/gallery/index.html)
 * JPEG header EXIF data extraction
-* Auto-rotation of veritcal images
+* Auto-rotation of vertical images
 
 This combination of features makes a better user experience than pretty much all the big online photo hosts. 
 All you need is a place to host your plain html and jpeg files. This can also be Amazon S3.
