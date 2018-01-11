@@ -1,8 +1,10 @@
 language: bash
 os:
   - linux
+  - osx
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y imagemagick jhead; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install imagemagick jhead; fi
 before_script:
   - curl -f "https://raw.githubusercontent.com/lehmannro/assert.sh/v1.1/assert.sh" -o assert.sh
 script:
