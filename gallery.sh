@@ -45,9 +45,9 @@ datetime+=" UTC"
 function usage {
 	returnCode="$1"
 	echo -e "Usage: $me [-t <title>] [-d <thumbdir>] [-h]:
-	[-t <title>]\t sets the title (default: $title)
-	[-d <thumbdir>]\t sets the thumbdir (default: $thumbdir)
-	[-h]\t\t displays help (this message)"
+	[-t <title>]\\t sets the title (default: $title)
+	[-d <thumbdir>]\\t sets the thumbdir (default: $thumbdir)
+	[-h]\\t\\t displays help (this message)"
 	exit "$returnCode"
 }
 
@@ -131,7 +131,7 @@ echo '<div class="row">' >> "$htmlfile"
 numfiles=0
 for filename in *.[jJ][pP][gG]; do
 	filelist[$numfiles]=$filename
-	let numfiles++
+	(( numfiles++ ))
 	for res in ${heights[*]}; do
 		if [[ ! -s $thumbdir/$res/$filename ]]; then
 			debugOutput "$thumbdir/$res/$filename"
@@ -219,7 +219,7 @@ EOF
 </body>
 </html>
 EOF
-	let file++
+	(( file++ ))
 done
 
 fi
