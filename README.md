@@ -28,7 +28,9 @@ Requirements
 
 On a debian-based system (Ubuntu), just run `apt-get install imagemagick jhead` as root.
 
-Under macOS you can install it with MacPort (https://www.macports.org/): `sudo port install imagemagick jhead`
+Under macOS you can install it with:
+* MacPort (https://www.macports.org/): `sudo port install imagemagick jhead`
+* Homebrew (https://brew.sh/): `brew install imagemagick jhead`
 
 Usage
 -----
