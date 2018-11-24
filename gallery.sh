@@ -124,7 +124,7 @@ cat > "$htmlfile" << EOF
 EOF
 
 ### Photos (JPG)
-if [[ $(find . -maxdepth 1 -type f -name \*.jpg | wc -l) -gt 0 ]]; then
+if [[ $(find . -maxdepth 1 -type f -iname \*.jpg | wc -l) -gt 0 ]]; then
 
 echo '<div class="row">' >> "$htmlfile"
 ## Generate Images
@@ -225,7 +225,7 @@ done
 fi
 
 ### Movies (MOV or MP4)
-if [[ $(find . -maxdepth 1 -type f -name \*.mov  -o -name '*.mp4' | wc -l) -gt 0 ]]; then
+if [[ $(find . -maxdepth 1 -type f -iname \*.mov  -o -iname '*.mp4' | wc -l) -gt 0 ]]; then
 	cat >> "$htmlfile" << EOF
 	<div class="row">
 		<div class="col-xs-12">
@@ -235,7 +235,7 @@ if [[ $(find . -maxdepth 1 -type f -name \*.mov  -o -name '*.mp4' | wc -l) -gt 0
 	<div class="row">
 	<div class="col-xs-12">
 EOF
-	if [[ $(find . -maxdepth 1 -type f -name \*.mov | wc -l) -gt 0 ]]; then
+	if [[ $(find . -maxdepth 1 -type f -iname \*.mov | wc -l) -gt 0 ]]; then
 	for filename in *.[mM][oO][vV]; do
 		filesize=$(getFileSize "$filename")
 		cat >> "$htmlfile" << EOF
@@ -243,7 +243,7 @@ EOF
 EOF
 	done
 	fi
-	if [[ $(find . -maxdepth 1 -type f -name \*.mp4 | wc -l) -gt 0 ]]; then
+	if [[ $(find . -maxdepth 1 -type f -iname \*.mp4 | wc -l) -gt 0 ]]; then
 	for filename in *.[mM][pP]4; do
 		filesize=$(getFileSize "$filename")
 		cat >> "$htmlfile" << EOF
@@ -255,7 +255,7 @@ EOF
 fi
 
 ### Downloads (ZIP)
-if [[ $(find . -maxdepth 1 -type f -name \*.zip | wc -l) -gt 0 ]]; then
+if [[ $(find . -maxdepth 1 -type f -iname \*.zip | wc -l) -gt 0 ]]; then
 	cat >> "$htmlfile" << EOF
 	<div class="row">
 		<div class="col-xs-12">
