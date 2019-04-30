@@ -21,9 +21,8 @@ convert="convert"
 # Use JHead for EXIF Information
 exif="jhead"
 
-# Bootstrap (currently v3.3.7)
-# Latest compiled and minified CSS
-stylesheet="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+# Bootstrap (currently v3.4.1)
+stylesheet="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
 
 downloadicon='<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>'
 movieicon='<span class="glyphicon glyphicon-film" aria-hidden="true"></span>'
