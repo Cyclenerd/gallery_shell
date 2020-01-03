@@ -50,7 +50,7 @@ ZIP files (.zip or .ZIP) and movies (.mov, .MOV, .mp4 or .MP4) are also consider
 Demo
 ----
 
-https://cyclenerd.github.io/gallery_shell_demo/
+https://www.nkn-it.de/gallery_shell_demo/
 
 Screenshots
 -----------
