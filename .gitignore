@@ -1,2 +1,3 @@
 .DS_Store
 assert.sh
+build/
