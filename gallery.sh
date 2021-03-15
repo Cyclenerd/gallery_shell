@@ -22,11 +22,7 @@ convert="convert"
 exif="jhead"
 
 # Bootstrap (currently v3.4.1)
-stylesheet="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
-
-downloadicon='<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>'
-movieicon='<span class="glyphicon glyphicon-film" aria-hidden="true"></span>'
-homeicon='<span class="glyphicon glyphicon-home" aria-hidden="true"></span>'
+stylesheet="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css"
 
 # Debugging output
 # true=enable, false=disable 
@@ -114,18 +110,22 @@ cat > "$htmlfile" << EOF
 	<link rel="stylesheet" href="$stylesheet">
 </head>
 <body>
-<div class="container">
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="page-header"><h1>$title</h1></div>
+<header>
+	<div class="navbar navbar-dark bg-dark shadow-sm">
+		<div class="container">
+			<a href="#" class="navbar-brand">
+				<strong>$title</strong>
+			</a>
 		</div>
 	</div>
+</header>
+<main class="container">
 EOF
 
 ### Photos (JPG)
 if [[ $(find . -maxdepth 1 -type f -iname \*.jpg | wc -l) -gt 0 ]]; then
 
-echo '<div class="row">' >> "$htmlfile"
+echo '<div class="row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 py-5">' >> "$htmlfile"
 ## Generate Images
 numfiles=0
 for filename in *.[jJ][pP][gG]; do
@@ -138,14 +138,12 @@ for filename in *.[jJ][pP][gG]; do
 		fi
 	done
 	cat >> "$htmlfile" << EOF
-<div class="col-md-3 col-sm-12">
+<div class="col">
 	<p>
-		<a href="$thumbdir/$filename.html"><img src="$thumbdir/$height_small/$filename" alt="" class="img-responsive"></a>
-		<div class="hidden-md hidden-lg"><hr></div>
+		<a href="$thumbdir/$filename.html"><img src="$thumbdir/$height_small/$filename" alt="Thumbnail: $filename" class="rounded mx-auto d-block"></a>
 	</p>
 </div>
 EOF
-[[ $((numfiles % 4)) -eq 0 ]] && echo '<div class="clearfix visible-md visible-lg"></div>' >> "$htmlfile"
 done
 echo '</div>' >> "$htmlfile"
 
@@ -172,29 +170,46 @@ while [[ $file -lt $numfiles ]]; do
 <link rel="stylesheet" href="$stylesheet">
 </head>
 <body>
-<div class="container">
-<div class="row">
-	<div class="col-xs-12">
-		<div class="page-header"><h2><a href="../$htmlfile">$homeicon</a> <span class="text-muted">/</span> $filename</h2></div>
+<header>
+	<div class="navbar navbar-dark bg-dark shadow-sm">
+		<div class="container">
+			<a href="../index.html" class="navbar-brand">
+				<strong>$title</strong>
+			</a>
+		</div>
 	</div>
-</div>
+</header>
+<main class="container">
 EOF
 
 	# Pager
-	echo '<div class="row"><div class="col-xs-12"><nav><ul class="pager">' >> "$imagehtmlfile"
-	[[ $prev ]] && echo '<li class="previous"><a href="'"$prev"'.html"><span aria-hidden="true">&larr;</span></a></li>' >> "$imagehtmlfile"
-	[[ $next ]] && echo '<li class="next"><a href="'"$next"'.html"><span aria-hidden="true">&rarr;</span></a></li>' >> "$imagehtmlfile"
-	echo '</ul></nav></div></div>' >> "$imagehtmlfile"
+	echo '<div class="row py-3"><div class="col text-left">' >> "$imagehtmlfile"
+	if [[ $prev ]]; then
+		echo '<a href="'"$prev"'.html" accesskey="p" title="⌨️ PC: [Alt]+[Shift]+[P] / MAC: [Control]+[Option]+[P]" class="btn btn-secondary " role="button">&laquo; Previous</a>' >> "$imagehtmlfile"
+	else
+		echo '<a href="#" class="btn btn-secondary  disabled" role="button" aria-disabled="true">&laquo; Previous</a>' >> "$imagehtmlfile"
+	fi
+	cat >> "$imagehtmlfile" << EOF
+</div>
+<div class="col d-none d-md-block text-center"><h3>$filename</h3></div>
+<div class="col text-right">
+EOF
+	if [[ $next ]]; then
+		echo '<a href="'"$next"'.html" accesskey="n" title="⌨️ PC: [Alt]+[Shift]+[N] / MAC: [Control]+[Option]+[N]" class="btn btn-secondary ">Next &raquo;</a>' >> "$imagehtmlfile"
+	else
+		echo '<a href="#" class="btn btn-secondary  disabled" role="button" aria-disabled="true">Next &raquo;</a>' >> "$imagehtmlfile"
+	fi
+	echo '</div></div>' >> "$imagehtmlfile"
 
 	cat >> "$imagehtmlfile" << EOF
 <div class="row">
-	<div class="col-xs-12">
-		<p><img src="$height_large/$filename" class="img-responsive" alt=""></p>
+	<div class="col">
+		<p><img src="$height_large/$filename" class="img-fluid" alt="Image: $filename"></p>
 	</div>
 </div>
 <div class="row">
-	<div class="col-xs-12">
-		<p><a class="btn btn-info btn-lg" href="../$filename">$downloadicon Download Original ($filesize)</a></p>
+	<div class="col">
+		<p><a class="btn btn-primary" href="../$filename">Download Original ($filesize)</a></p>
 	</div>
 </div>
 EOF
@@ -203,7 +218,7 @@ EOF
 	if [[ $exifinfo ]]; then
 		cat >> "$imagehtmlfile" << EOF
 <div class="row">
-<div class="col-xs-12">
+<div class="col">
 <pre>
 $exifinfo
 </pre>
@@ -214,7 +229,13 @@ EOF
 
 	# Footer
 	cat >> "$imagehtmlfile" << EOF
-</div>
+</main> <!-- // main container -->
+<br>
+<footer class="footer mt-auto py-3 bg-light">
+	<div class="container">
+		<span class="text-muted">$footer - $datetime</span>
+	</div>
+</footer>
 </body>
 </html>
 EOF
@@ -227,18 +248,18 @@ fi
 if [[ $(find . -maxdepth 1 -type f -iname \*.mov  -o -iname '*.mp4' | wc -l) -gt 0 ]]; then
 	cat >> "$htmlfile" << EOF
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col">
 			<div class="page-header"><h2>Movies</h2></div>
 		</div>
 	</div>
 	<div class="row">
-	<div class="col-xs-12">
+	<div class="col">
 EOF
 	if [[ $(find . -maxdepth 1 -type f -iname \*.mov | wc -l) -gt 0 ]]; then
 	for filename in *.[mM][oO][vV]; do
 		filesize=$(getFileSize "$filename")
 		cat >> "$htmlfile" << EOF
-<a href="$filename" class="btn btn-primary" role="button">$movieicon $filename ($filesize)</a>
+<a href="$filename" class="btn btn-primary" role="button">$filename ($filesize)</a>
 EOF
 	done
 	fi
@@ -246,7 +267,7 @@ EOF
 	for filename in *.[mM][pP]4; do
 		filesize=$(getFileSize "$filename")
 		cat >> "$htmlfile" << EOF
-<a href="$filename" class="btn btn-primary" role="button">$movieicon $filename ($filesize)</a>
+<a href="$filename" class="btn btn-primary" role="button">$filename ($filesize)</a>
 EOF
 	done
 	fi
@@ -257,17 +278,17 @@ fi
 if [[ $(find . -maxdepth 1 -type f -iname \*.zip | wc -l) -gt 0 ]]; then
 	cat >> "$htmlfile" << EOF
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col">
 			<div class="page-header"><h2>Downloads</h2></div>
 		</div>
 	</div>
 	<div class="row">
-	<div class="col-xs-12">
+	<div class="col">
 EOF
 	for filename in *.[zZ][iI][pP]; do
 		filesize=$(getFileSize "$filename")
 		cat >> "$htmlfile" << EOF
-<a href="$filename" class="btn btn-primary" role="button">$downloadicon $filename ($filesize)</a>
+<a href="$filename" class="btn btn-primary" role="button">$filename ($filesize)</a>
 EOF
 	done
 	echo '</div></div>' >> "$htmlfile"
@@ -275,14 +296,15 @@ fi
 
 ### Footer
 cat >> "$htmlfile" << EOF
-<hr>
-<footer>
-	<p>$footer</p>
-	<p class="text-muted">$datetime</p>
+</main> <!-- // main container -->
+<br>
+<footer class="footer mt-auto py-3 bg-light">
+	<div class="container">
+		<span class="text-muted">$footer - $datetime</span>
+	</div>
 </footer>
-</div> <!-- // container -->
 </body>
 </html>
 EOF
 
-debugOutput "= done :-)"
+debugOutput "= done"
