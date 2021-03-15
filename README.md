@@ -36,23 +36,23 @@ Under macOS you can install it with...
 
 [MacPort](https://www.macports.org/):
 
-```
+```shell
 sudo port install imagemagick jhead
 ```
 
 [Homebrew](https://brew.sh/):
 
-```
+```shell
 brew install imagemagick jhead
 ```
 
 ## Usage
 
-```shell
+```text
 gallery.sh [-t <title>] [-d <thumbdir>] [-h]:
-	[-t <title>]	 sets the title (default: Gallery)
-	[-d <thumbdir>]	 sets the thumbdir (default: __thumbs)
-	[-h]		 displays help (this message)
+	[-t <title>]     sets the title (default: Gallery)
+	[-d <thumbdir>]  sets the thumbdir (default: __thumbs)
+	[-h]             displays help (this message)
 ```
 
 Example: `gallery.sh` or `gallery.sh -t "My Photos" -d "thumbs"`
@@ -65,12 +65,27 @@ It does not work recursively.
 ZIP files (.zip or .ZIP) and movies (.mov, .MOV, .mp4 or .MP4) are also considered.
 They appear as a download button in the gallery.
 
+## Hint
+
+Create a Bash alias for `gallery.sh`.
+
+Open the `~/.bash_profile`,  `~/.bashrc` or `~/.bash_aliases` in your text editor:
+
+```shell
+nano ~/.bash_aliases
+```
+
+Add your alias:
+
+```shell
+alias gallery='/home/nils/gallery_shell/gallery.sh'
+```
+
 ## Demo
 
 This [demo page](https://cyclenerd.github.io/gallery_shell/) is generated with [GitHub Action](https://github.com/Cyclenerd/gallery_shell/blob/master/.github/workflows/main.yml): <https://cyclenerd.github.io/gallery_shell/>
 
 ## Screenshots
-
 
 ![Screenshot: Gallery](images/gallery.jpg)
 
