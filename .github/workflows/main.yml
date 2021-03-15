@@ -17,7 +17,7 @@ jobs:
           cp images/demo/* build/
           cd build/
           ls -lah
-          bash ../gallery.sh -t "Demo Gallery"
+          bash ../gallery.sh -t "Demo Gallery" -d "thumbs"
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.0.0
         with:
