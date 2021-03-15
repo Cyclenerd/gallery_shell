@@ -9,23 +9,8 @@ if [ ! -e assert.sh ]; then
 	curl -f "https://raw.githubusercontent.com/lehmannro/assert.sh/v1.1/assert.sh" -o assert.sh
 fi
 
-# Download demo files
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Landscape_1.jpg" -o "Landscape_1.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Landscape_2.jpg" -o "Landscape_2.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Landscape_3.jpg" -o "Landscape_3.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Landscape_4.jpg" -o "Landscape_4.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Landscape_5.jpg" -o "Landscape_5.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Landscape_6.jpg" -o "Landscape_6.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Landscape_7.jpg" -o "Landscape_7.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Landscape_8.jpg" -o "Landscape_8.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Portrait_1.jpg"  -o "Portrait_1.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Portrait_2.jpg"  -o "Portrait_2.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Portrait_3.jpg"  -o "Portrait_3.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Portrait_4.jpg"  -o "Portrait_4.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Portrait_5.jpg"  -o "Portrait_5.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Portrait_6.jpg"  -o "Portrait_6.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Portrait_7.jpg"  -o "Portrait_7.jpg"
-curl -f "https://www.nkn-it.de/gallery_shell_demo/Portrait_8.jpg"  -o "Portrait_8.jpg"
+# Copy demo files
+cp images/demo/* ./
 
 # shellcheck disable=SC1091
 source assert.sh
