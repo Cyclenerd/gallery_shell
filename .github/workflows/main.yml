@@ -10,14 +10,12 @@ jobs:
         run: sudo apt-get install imagemagick jhead
       - name: Checkout 🛎️
         uses: actions/checkout@v2
-      - name: Configuration 🖊️
+      - name: Build 🖼️
         run: |
           ls -lah
           mkdir -p build/
           cp images/demo/* build/
           cd build/
-      - name: Build 🖼️
-        run: |
           ls -lah
           bash ../gallery.sh -t "Demo Gallery"
       - name: Deploy 🚀
