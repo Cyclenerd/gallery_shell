@@ -29,8 +29,8 @@ assert_end examples
 # $ bash gallery.sh -t Test
 assert_raises "bash gallery.sh -t Test"
 
-assert "cat index.html | grep '<h1>Test</h1>' | tr -d '\011\012\015'" '<div class="page-header"><h1>Test</h1></div>'
-assert "cat index.html | grep '__thumbs/Landscape_1.jpg.html' | tr -d '\011\012\015'" '<a href="__thumbs/Landscape_1.jpg.html"><img src="__thumbs/187/Landscape_1.jpg" alt="" class="img-responsive"></a>'
+assert "cat index.html | grep '<title>Test</title>' | tr -d '\011\012\015'" '<title>Test</title>'
+assert "cat index.html | grep '__thumbs/Landscape_1.jpg.html' | tr -d '\011\012\015'" '<a href="__thumbs/Landscape_1.jpg.html"><img src="__thumbs/187/Landscape_1.jpg" alt="Thumbnail: Landscape_1.jpg" class="rounded mx-auto d-block"></a>'
 
 assert "cat __thumbs/Landscape_1.jpg.html | grep '<title>Landscape_1.jpg</title>' | tr -d '\011\012\015'" '<title>Landscape_1.jpg</title>'
 assert "cat __thumbs/Landscape_1.jpg.html | grep 'Resolution' | tr -d '\040\011\012\015'" 'Resolution:600x450'
