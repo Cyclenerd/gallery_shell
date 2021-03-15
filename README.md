@@ -21,6 +21,16 @@ It offers several features:
 This combination of features makes a better user experience than pretty much all the big online photo hosts. 
 All you need is a place to host your plain html and jpeg files. This can also be Amazon S3.
 
+## Installation
+
+Download Bash script `gallery.sh`:
+
+```shell
+curl \
+  -f "https://raw.githubusercontent.com/Cyclenerd/gallery_shell/master/gallery.sh" \
+  -o "gallery.sh"
+```
+
 ## Requirements
 
 * [ImageMagick](http://www.imagemagick.org/) for the `convert` utility.
