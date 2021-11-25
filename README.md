@@ -24,9 +24,7 @@ All you need is a place to host your plain html and jpeg files. This can also be
 Download Bash script `gallery.sh`:
 
 ```shell
-curl \
-  -f "https://raw.githubusercontent.com/Cyclenerd/gallery_shell/master/gallery.sh" \
-  -o "gallery.sh"
+curl -O "https://raw.githubusercontent.com/Cyclenerd/gallery_shell/master/gallery.sh"
 ```
 
 ## Requirements
