@@ -1,7 +1,5 @@
 # gallery.sh
 
-[![Build Status](https://travis-ci.org/Cyclenerd/gallery_shell.svg?branch=master)](https://travis-ci.org/Cyclenerd/gallery_shell)
-
 Bash Script to generate static web galleries. No server-side programs (i.e. PHP, MySQL) required.
 
 ## Overview

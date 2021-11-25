@@ -1,9 +1,0 @@
-language: bash
-os:
-  - linux
-before_install:
-  - sudo apt-get install -y imagemagick jhead
-before_script:
-  - curl -f "https://raw.githubusercontent.com/lehmannro/assert.sh/v1.1/assert.sh" -o assert.sh
-script:
-  - bash tests.sh
