@@ -1,0 +1,26 @@
+name: "macOS 11"
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  macos-11:
+    name: Test macOS 11
+    runs-on: macos-11
+    steps:
+      - name: Install dependencies 🔧
+        run: brew install imagemagick jhead
+
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Get assert.sh 🎁
+        run: curl -f "https://raw.githubusercontent.com/lehmannro/assert.sh/v1.1/assert.sh" -o assert.sh
+
+      - name: Test 🛠️
+        run: bash test.sh
