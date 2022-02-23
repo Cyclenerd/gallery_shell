@@ -1,10 +1,11 @@
 # gallery.sh
 
+Bash Script to generate static web galleries. No server-side programs (i.e. PHP, MySQL) required.
+
 [![ShellCheck](https://github.com/Cyclenerd/gallery_shell/actions/workflows/shellcheck.yml/badge.svg?branch=master)](https://github.com/Cyclenerd/gallery_shell/actions/workflows/shellcheck.yml)
 [![Ubuntu 20.04 LTS](https://github.com/Cyclenerd/gallery_shell/actions/workflows/ubuntu_2004.yml/badge.svg?branch=master)](https://github.com/Cyclenerd/gallery_shell/actions/workflows/ubuntu_2004.yml)
 [![macOS 11](https://github.com/Cyclenerd/gallery_shell/actions/workflows/macos_11.yml/badge.svg?branch=master)](https://github.com/Cyclenerd/gallery_shell/actions/workflows/macos_11.yml)
-
-Bash Script to generate static web galleries. No server-side programs (i.e. PHP, MySQL) required.
+[![GitHub](https://img.shields.io/github/license/cyclenerd/gallery_shell)](https://github.com/Cyclenerd/gallery_shell/blob/master/LICENSE)
 
 ## Overview
 
