@@ -17,7 +17,7 @@ jobs:
         run: brew install imagemagick jhead
 
       - name: Checkout 🛎️
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Get assert.sh 🎁
         run: curl -f "https://raw.githubusercontent.com/lehmannro/assert.sh/v1.1/assert.sh" -o assert.sh

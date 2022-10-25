@@ -9,7 +9,7 @@ jobs:
       - name: Dependencies 🔧
         run: sudo apt-get install imagemagick jhead
       - name: Checkout 🛎️
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Build 🖼️
         run: |
           ls -lah
@@ -18,8 +18,9 @@ jobs:
           cd build/
           ls -lah
           bash ../gallery.sh -t "Demo Gallery" -d "thumbs"
+      # https://github.com/marketplace/actions/deploy-to-github-pages
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@4.0.0
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: build # The folder the action should deploy.
