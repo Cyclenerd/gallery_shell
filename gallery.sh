@@ -8,7 +8,7 @@
 #### Configuration Section
 #########################################################################################
 
-MY_HEIGHT_SMALL=187
+MY_HEIGHT_SMALL=406
 MY_HEIGHT_LARGE=768
 MY_QUALITY=85
 MY_THUMBDIR="__thumbs"
@@ -22,7 +22,7 @@ MY_CONVERT_COMMAND="convert"
 MY_EXIF_COMMAND="jhead"
 
 # Bootstrap 4
-MY_CSS="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css"
+MY_CSS="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/css/bootstrap.min.css"
 
 # Debugging output
 # true=enable, false=disable 
@@ -93,7 +93,7 @@ command -v $MY_EXIF_COMMAND >/dev/null 2>&1 || { echo >&2 "!!! $MY_EXIF_COMMAND 
 
 MY_HEIGHTS[0]=$MY_HEIGHT_SMALL
 MY_HEIGHTS[1]=$MY_HEIGHT_LARGE
-for MY_RES in ${MY_HEIGHTS[*]}; do
+for MY_RES in "${MY_HEIGHTS[@]}"; do
 	[[ -d "$MY_THUMBDIR/$MY_RES" ]] || mkdir -p "$MY_THUMBDIR/$MY_RES" || exit 3
 done
 
@@ -125,13 +125,14 @@ EOF
 ### Photos (JPG)
 if [[ $(find . -maxdepth 1 -type f -iname \*.jpg | wc -l) -gt 0 ]]; then
 
-echo '<div class="row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 py-5">' >> "$MY_INDEX_HTML_FILE"
+MY_ROWS='3'
+echo '<div class="row row-cols-sm-1 row-cols-md-'"$((MY_ROWS-2))"' row-cols-lg-'"$((MY_ROWS-1))"' row-cols-xl-'"$MY_ROWS"' py-5">' >> "$MY_INDEX_HTML_FILE"
 ## Generate Images
 MY_NUM_FILES=0
 for MY_FILENAME in *.[jJ][pP][gG]; do
 	MY_FILELIST[$MY_NUM_FILES]=$MY_FILENAME
 	(( MY_NUM_FILES++ ))
-	for MY_RES in ${MY_HEIGHTS[*]}; do
+	for MY_RES in "${MY_HEIGHTS[@]}"; do
 		if [[ ! -s $MY_THUMBDIR/$MY_RES/$MY_FILENAME ]]; then
 			debugOutput "$MY_THUMBDIR/$MY_RES/$MY_FILENAME"
 			$MY_CONVERT_COMMAND -auto-orient -strip -quality $MY_QUALITY -resize x$MY_RES "$MY_FILENAME" "$MY_THUMBDIR/$MY_RES/$MY_FILENAME"
@@ -140,7 +141,7 @@ for MY_FILENAME in *.[jJ][pP][gG]; do
 	cat >> "$MY_INDEX_HTML_FILE" << EOF
 <div class="col">
 	<p>
-		<a href="$MY_THUMBDIR/$MY_FILENAME.html"><img src="$MY_THUMBDIR/$MY_HEIGHT_SMALL/$MY_FILENAME" alt="Thumbnail: $MY_FILENAME" class="rounded mx-auto d-block"></a>
+		<a href="$MY_THUMBDIR/$MY_FILENAME.html"><img src="$MY_THUMBDIR/$MY_HEIGHT_SMALL/$MY_FILENAME" alt="Thumbnail: $MY_FILENAME" class="rounded mx-auto d-block" height="$((MY_HEIGHT_SMALL/2))"></a>
 	</p>
 </div>
 EOF
