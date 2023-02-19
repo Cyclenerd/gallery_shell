@@ -30,7 +30,7 @@ assert_end examples
 assert_raises "bash gallery.sh -t Test"
 
 assert "cat index.html | grep '<title>Test</title>' | tr -d '\011\012\015'" '<title>Test</title>'
-assert "cat index.html | grep '__thumbs/Landscape_1.jpg.html' | tr -d '\011\012\015'" '<a href="__thumbs/Landscape_1.jpg.html"><img src="__thumbs/187/Landscape_1.jpg" alt="Thumbnail: Landscape_1.jpg" class="rounded mx-auto d-block"></a>'
+assert "cat index.html | grep '__thumbs/Landscape_1.jpg.html' | tr -d '\011\012\015'" '<a href="__thumbs/Landscape_1.jpg.html"><img src="__thumbs/406/Landscape_1.jpg" alt="Thumbnail: Landscape_1.jpg" class="rounded mx-auto d-block" height="203"></a>'
 
 assert "cat __thumbs/Landscape_1.jpg.html | grep '<title>Landscape_1.jpg</title>' | tr -d '\011\012\015'" '<title>Landscape_1.jpg</title>'
 assert "cat __thumbs/Landscape_1.jpg.html | grep 'Resolution' | tr -d '\040\011\012\015'" 'Resolution:600x450'
