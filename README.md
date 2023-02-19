@@ -1,11 +1,14 @@
 # gallery.sh
 
-Bash Script to generate static web galleries. No server-side programs (i.e. PHP, MySQL) required.
+[![Bagde: GNU Bash](https://img.shields.io/badge/GNU%20Bash-4EAA25.svg?logo=gnubash&logoColor=white)](https://github.com/Cyclenerd/gallery_shell#readme)
+[![Bagde: Linux](https://img.shields.io/badge/Linux-FCC624.svg?logo=linux&logoColor=black)](https://github.com/Cyclenerd/gallery_shell#readme)
+[![Bagde: Apple](https://img.shields.io/badge/Apple-000000.svg?logo=apple&logoColor=white)](https://github.com/Cyclenerd/gallery_shell#readme)
+[![Badge: License](https://img.shields.io/github/license/cyclenerd/gallery_shell)](https://github.com/Cyclenerd/gallery_shell/blob/master/LICENSE)
+[![Badge: ShellCheck](https://github.com/Cyclenerd/gallery_shell/actions/workflows/shellcheck.yml/badge.svg?branch=master)](https://github.com/Cyclenerd/gallery_shell/actions/workflows/shellcheck.yml)
+[![Badge: Ubuntu](https://github.com/Cyclenerd/gallery_shell/actions/workflows/ubuntu.yml/badge.svg?branch=master)](https://github.com/Cyclenerd/gallery_shell/actions/workflows/ubuntu.yml)
+[![Badge: macOS](https://github.com/Cyclenerd/gallery_shell/actions/workflows/macos.yml/badge.svg?branch=master)](https://github.com/Cyclenerd/gallery_shell/actions/workflows/macos.yml)
 
-[![ShellCheck](https://github.com/Cyclenerd/gallery_shell/actions/workflows/shellcheck.yml/badge.svg?branch=master)](https://github.com/Cyclenerd/gallery_shell/actions/workflows/shellcheck.yml)
-[![Ubuntu](https://github.com/Cyclenerd/gallery_shell/actions/workflows/ubuntu.yml/badge.svg?branch=master)](https://github.com/Cyclenerd/gallery_shell/actions/workflows/ubuntu.yml)
-[![macOS](https://github.com/Cyclenerd/gallery_shell/actions/workflows/macos.yml/badge.svg?branch=master)](https://github.com/Cyclenerd/gallery_shell/actions/workflows/macos.yml)
-[![GitHub](https://img.shields.io/github/license/cyclenerd/gallery_shell)](https://github.com/Cyclenerd/gallery_shell/blob/master/LICENSE)
+Bash Script to generate static web galleries. No server-side programs (i.e. PHP, MySQL) required.
 
 ## Overview
 
@@ -98,9 +101,9 @@ This [demo page](https://cyclenerd.github.io/gallery_shell/) is generated with [
 
 ## Screenshots
 
-![Screenshot: Gallery](images/gallery.jpg)
+[![Screenshot: Gallery](images/gallery.jpg?v1)](https://cyclenerd.github.io/gallery_shell/)
 
-![Screenshot: Image](images/image.jpg)
+[![Screenshot: Image](images/image.jpg?v1)](https://cyclenerd.github.io/gallery_shell/thumbs/Landscape_8.jpg.html)
 
 ## License
 
