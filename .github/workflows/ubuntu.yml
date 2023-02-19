@@ -1,4 +1,4 @@
-name: "Ubuntu 20.04 LTS"
+name: "Ubuntu"
 
 on:
   push:
@@ -10,8 +10,8 @@ on:
 
 jobs:
   ubuntu-2004:
-    name: Test Ubuntu 20.04 LTS
-    runs-on: ubuntu-20.04
+    name: Test Ubuntu
+    runs-on: ubuntu-latest
     steps:
 
       - name: Dependencies 🔧

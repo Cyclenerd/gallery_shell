@@ -1,4 +1,4 @@
-name: "macOS 11"
+name: "macOS"
 
 on:
   push:
@@ -10,8 +10,8 @@ on:
 
 jobs:
   macos-11:
-    name: Test macOS 11
-    runs-on: macos-11
+    name: Test macOS
+    runs-on: macos-latest
     steps:
       - name: Install dependencies 🔧
         run: brew install imagemagick jhead
