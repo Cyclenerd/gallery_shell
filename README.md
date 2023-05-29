@@ -101,9 +101,9 @@ This [demo page](https://cyclenerd.github.io/gallery_shell/) is generated with [
 
 ## Screenshots
 
-[![Screenshot: Gallery](images/gallery.jpg?v1)](https://cyclenerd.github.io/gallery_shell/)
+[![Screenshot: Gallery](images/gallery.jpg)](https://cyclenerd.github.io/gallery_shell/)
 
-[![Screenshot: Image](images/image.jpg?v1)](https://cyclenerd.github.io/gallery_shell/thumbs/Landscape_8.jpg.html)
+[![Screenshot: Image](images/image.jpg)](https://cyclenerd.github.io/gallery_shell/thumbs/Landscape_8.jpg.html)
 
 ## License
 
