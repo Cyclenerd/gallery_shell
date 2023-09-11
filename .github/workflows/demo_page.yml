@@ -9,7 +9,7 @@ jobs:
       - name: Dependencies 🔧
         run: sudo apt-get install imagemagick jhead
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build 🖼️
         run: |
           ls -lah
