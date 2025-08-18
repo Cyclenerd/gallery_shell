@@ -130,12 +130,12 @@ echo '<div class="row row-cols-sm-1 row-cols-md-'"$((MY_ROWS-2))"' row-cols-lg-'
 ## Generate Images
 MY_NUM_FILES=0
 for MY_FILENAME in *.[jJ][pP][gG]; do
-	MY_FILELIST[$MY_NUM_FILES]=$MY_FILENAME
+	MY_FILELIST[MY_NUM_FILES]=$MY_FILENAME
 	(( MY_NUM_FILES++ ))
 	for MY_RES in "${MY_HEIGHTS[@]}"; do
 		if [[ ! -s $MY_THUMBDIR/$MY_RES/$MY_FILENAME ]]; then
 			debugOutput "$MY_THUMBDIR/$MY_RES/$MY_FILENAME"
-			$MY_CONVERT_COMMAND -auto-orient -strip -quality $MY_QUALITY -resize x$MY_RES "$MY_FILENAME" "$MY_THUMBDIR/$MY_RES/$MY_FILENAME"
+			$MY_CONVERT_COMMAND -auto-orient -strip -quality $MY_QUALITY -resize x"$MY_RES" "$MY_FILENAME" "$MY_THUMBDIR/$MY_RES/$MY_FILENAME"
 		fi
 	done
 	cat >> "$MY_INDEX_HTML_FILE" << EOF
