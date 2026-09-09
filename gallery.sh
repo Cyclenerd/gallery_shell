@@ -28,6 +28,9 @@ MY_CSS="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.2/css/boots
 # true=enable, false=disable 
 MY_DEBUG=true
 
+# Sorting option: 'filename' (default) or 'exiftime'
+MY_SORT_MODE="filename"
+
 #########################################################################################
 #### End Configuration Section
 #########################################################################################
@@ -39,9 +42,10 @@ MY_DATETIME+=" UTC"
 
 function usage {
 	MY_RETURN_CODE="$1"
-	echo -e "Usage: $MY_SCRIPT_NAME [-t <title>] [-d <thumbdir>] [-h]:
+	echo -e "Usage: $MY_SCRIPT_NAME [-t <title>] [-d <thumbdir>] [-s <sort_mode>]:
 	[-t <title>]\\t sets the title (default: $MY_TITLE)
 	[-d <thumbdir>]\\t sets the thumbdir (default: $MY_THUMBDIR)
+	[-s <sort_mode>]\\t sets sorting mode: 'filename' (default) or 'exiftime'
 	[-h]\\t\\t displays help (this message)"
 	exit "$MY_RETURN_CODE"
 }
@@ -64,13 +68,45 @@ function getFileSize(){
 	echo "$MY_FILE_SIZE"
 }
 
-while getopts ":t:d:h" opt; do
+# Function to get EXIF date as a sortable string YYYYMMDD_HHMMSS
+function get_exif_date() {
+	local file="$1"
+	local exif_data
+	
+	# Extract the DateTimeOriginal line from jhead output
+	exif_data=$($MY_EXIF_COMMAND "$file" 2>/dev/null | grep "Date/Time")
+	
+	if [[ -n "$exif_data" ]]; then
+		# Format is usually: Date/Time : YYYY:MM:DD HH:MM:SS
+		# We want to convert it to YYYYMMDD_HHMMSS for sorting
+		local date_part
+		date_part=$(echo "$exif_data" | sed 's/.*: //' | tr -d ': ')
+		# date_part is now "YYYYMMDD HHMMSS"
+		local sortable_date
+		sortable_date=$(echo "$date_part" | tr -d ' ')
+		echo "$sortable_date"
+	else
+		# If no EXIF date, return current timestamp or a very early date to push it to end/beginning
+		# Using 0 ensures files without EXIF go to the beginning when sorting ascending
+		echo "00000000_000000"
+	fi
+}
+
+while getopts ":t:d:s:h" opt; do
 	case $opt in
 	t)
 		MY_TITLE="$OPTARG"
 		;;
 	d)
 		MY_THUMBDIR="$OPTARG"
+		;;
+	s)
+		if [[ "$OPTARG" == "exiftime" || "$OPTARG" == "filename" ]]; then
+			MY_SORT_MODE="$OPTARG"
+		else
+			echo "Invalid sort mode: $OPTARG. Use 'filename' or 'exiftime'."
+			usage 1
+		fi
 		;;
 	h)
 		usage 0
@@ -82,7 +118,7 @@ while getopts ":t:d:h" opt; do
 	esac
 done
 
-debugOutput "- $MY_SCRIPT_NAME : $MY_DATETIME"
+debugOutput "- $MY_SCRIPT_NAME : $MY_DATETIME (Sort Mode: $MY_SORT_MODE)"
 
 ### Check Commands
 command -v $MY_CONVERT_COMMAND >/dev/null 2>&1 || { echo >&2 "!!! $MY_CONVERT_COMMAND it's not installed.  Aborting."; exit 1; }
@@ -122,22 +158,69 @@ cat > "$MY_INDEX_HTML_FILE" << EOF
 <main class="container">
 EOF
 
-### Photos (JPG)
+### Photos (JPG) - Check if any exist first
 if [[ $(find . -maxdepth 1 -type f -iname \*.jpg | wc -l) -gt 0 ]]; then
+
+# Collect all JPG files into an array initially
+MY_RAW_FILES=()
+for MY_FILENAME in *.[jJ][pP][gG]; do
+	# Check if the glob actually matched something (bash doesn't expand to literal pattern if no match)
+	[[ -e "$MY_FILENAME" ]] || continue
+	MY_RAW_FILES+=("$MY_FILENAME")
+done
+
+MY_NUM_FILES=${#MY_RAW_FILES[@]}
+
+# If sorting by EXIF, we need to create a sort key for each file
+if [[ "$MY_SORT_MODE" == "exiftime" ]]; then
+	debugOutput "Sorting by EXIF time..."
+	SORT_TEMP_FILE=$(mktemp)
+	
+	for MY_FILENAME in "${MY_RAW_FILES[@]}"; do
+		SORT_KEY=$(get_exif_date "$MY_FILENAME")
+		echo "${SORT_KEY} ${MY_FILENAME}" >> "$SORT_TEMP_FILE"
+	done
+	
+	# Sort the file and extract just the filenames back into an array
+	MY_SORTED_FILES=()
+	while IFS=' ' read -r _ filename; do
+		MY_SORTED_FILES+=("$filename")
+	done < <(sort "$SORT_TEMP_FILE")
+	
+	rm -f "$SORT_TEMP_FILE"
+	
+	# Update the working list and count
+	MY_RAW_FILES=("${MY_SORTED_FILES[@]}")
+	MY_NUM_FILES=${#MY_RAW_FILES[@]}
+else
+	# If sorting by filename, we just use the glob order (which is alphabetical)
+	# But we need to ensure MY_RAW_FILES matches the glob expansion order.
+	# Since bash globs are alphabetical, and our initial loop was alphabetical, 
+	# we can just re-glob or keep the array if it was built correctly.
+	# To be safe and consistent with previous behavior, rebuild from glob:
+	MY_RAW_FILES=()
+	for MY_FILENAME in *.[jJ][pP][gG]; do
+		[[ -e "$MY_FILENAME" ]] || continue
+		MY_RAW_FILES+=("$MY_FILENAME")
+	done
+	MY_NUM_FILES=${#MY_RAW_FILES[@]}
+fi
 
 MY_ROWS='3'
 echo '<div class="row row-cols-sm-1 row-cols-md-'"$((MY_ROWS-2))"' row-cols-lg-'"$((MY_ROWS-1))"' row-cols-xl-'"$MY_ROWS"' py-5">' >> "$MY_INDEX_HTML_FILE"
-## Generate Images
+
+## Generate Images and Index Links
 MY_NUM_FILES=0
-for MY_FILENAME in *.[jJ][pP][gG]; do
+for MY_FILENAME in "${MY_RAW_FILES[@]}"; do
 	MY_FILELIST[MY_NUM_FILES]=$MY_FILENAME
-	(( MY_NUM_FILES++ ))
+	
 	for MY_RES in "${MY_HEIGHTS[@]}"; do
 		if [[ ! -s $MY_THUMBDIR/$MY_RES/$MY_FILENAME ]]; then
 			debugOutput "$MY_THUMBDIR/$MY_RES/$MY_FILENAME"
 			$MY_CONVERT_COMMAND -auto-orient -strip -quality $MY_QUALITY -resize x"$MY_RES" "$MY_FILENAME" "$MY_THUMBDIR/$MY_RES/$MY_FILENAME"
 		fi
 	done
+	
 	cat >> "$MY_INDEX_HTML_FILE" << EOF
 <div class="col">
 	<p>
@@ -145,6 +228,7 @@ for MY_FILENAME in *.[jJ][pP][gG]; do
 	</p>
 </div>
 EOF
+	(( MY_NUM_FILES++ ))
 done
 echo '</div>' >> "$MY_INDEX_HTML_FILE"
 
