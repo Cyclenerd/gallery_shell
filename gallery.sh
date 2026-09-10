@@ -42,7 +42,7 @@ MY_DATETIME+=" UTC"
 
 function usage {
 	MY_RETURN_CODE="$1"
-	echo -e "Usage: $MY_SCRIPT_NAME [-t <title>] [-d <thumbdir>] [-s <sort_mode>]:
+	echo -e "Usage: $MY_SCRIPT_NAME [-t <title>] [-d <thumbdir>] [-s <sort_mode>] [-h]:
 	[-t <title>]\\t sets the title (default: $MY_TITLE)
 	[-d <thumbdir>]\\t sets the thumbdir (default: $MY_THUMBDIR)
 	[-s <sort_mode>]\\t sets sorting mode: 'filename' (default) or 'exiftime'
@@ -69,21 +69,23 @@ function getFileSize(){
 }
 
 # Function to get EXIF date as a sortable string YYYYMMDD_HHMMSS
-function get_exif_date() {
+function getExifDate() {
 	local file="$1"
 	local exif_data
 	
-	# Extract the DateTimeOriginal line from jhead output
+	# Extract the DateTimeOriginal line from jhead output, falling back to File date
 	exif_data=$($MY_EXIF_COMMAND "$file" 2>/dev/null | grep "Date/Time")
+	if [[ -z "$exif_data" ]]; then
+		exif_data=$($MY_EXIF_COMMAND "$file" 2>/dev/null | grep "File date")
+	fi
 	
 	if [[ -n "$exif_data" ]]; then
-		# Format is usually: Date/Time : YYYY:MM:DD HH:MM:SS
-		# We want to convert it to YYYYMMDD_HHMMSS for sorting
-		local date_part
-		date_part=$(echo "$exif_data" | sed 's/.*: //' | tr -d ': ')
-		# date_part is now "YYYYMMDD HHMMSS"
-		local sortable_date
-		sortable_date=$(echo "$date_part" | tr -d ' ')
+		# Extract the date/time after the last colon and space: "YYYY:MM:DD HH:MM:SS"
+		local dt="${exif_data##*: }"
+		# Remove colons: "YYYYMMDD HHMMSS"
+		dt="${dt//:/}"
+		# Replace space with underscore: "YYYYMMDD_HHMMSS"
+		local sortable_date="${dt// /_}"
 		echo "$sortable_date"
 	else
 		# If no EXIF date, return current timestamp or a very early date to push it to end/beginning
@@ -177,7 +179,7 @@ if [[ "$MY_SORT_MODE" == "exiftime" ]]; then
 	SORT_TEMP_FILE=$(mktemp)
 	
 	for MY_FILENAME in "${MY_RAW_FILES[@]}"; do
-		SORT_KEY=$(get_exif_date "$MY_FILENAME")
+		SORT_KEY=$(getExifDate "$MY_FILENAME")
 		echo "${SORT_KEY} ${MY_FILENAME}" >> "$SORT_TEMP_FILE"
 	done
 	
